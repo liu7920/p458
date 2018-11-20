@@ -62,7 +62,38 @@ public:
 	Monster(int d, int _x, int _y):GameObject(d,_x,_y){};
 	void move() {
 		int num;
-		num=rand()%4+1;
+		while(1){
+			num=rand()%4+1;
+			if(num==1){
+				this->y=this->y-2;
+				if(this->y < 0){
+					this->y=this->y+2;
+				}
+			}
+			else if(num==2){
+				this->x=this->x+2;
+				if(this->x > 9){
+					this->x=this->x-2;
+				}
+			}
+			else if(num==3){
+				this->x=this->x-2;
+				if(this->x < 0){
+					this->x=this->x+2;
+				}
+			}
+			else if(num==4){
+				this->y=this->y+2;
+				if(this->y > 19){
+					this->y=this->y-2;
+				}
+			}
+
+			if(this->x >= 0 && this->x <= 9 && this->y >= 0 && this->y <= 19){
+				break;
+			}
+		}
+
 	}
 	char getShape() {
 		return 'M';
@@ -108,6 +139,10 @@ int main() {
 		str[h->getX()][h->getY()]='-';
 		h->move();
 		str[h->getX()][h->getY()]=h->getShape();
+
+		str[m->getX()][m->getY()]='-';
+		m->move();
+		str[m->getX()][m->getY()]=m->getShape();
 
 		if(h->collide(f)){
 			cout << "게임에서 이겼습니다." << endl;
