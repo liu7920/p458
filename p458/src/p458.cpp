@@ -104,7 +104,40 @@ public:
 class Food : public GameObject{
 public:
 	Food(int d, int _x, int _y):GameObject(d,_x,_y){};
-	void move() {};
+	void move() {
+		int num;
+		while(1){
+			num=rand()%4+1;
+			if(num==1){
+				this->y=this->y-1;
+				if(this->y < 0){
+					this->y=this->y+1;
+				}
+			}
+			else if(num==2){
+				this->x=this->x+1;
+				if(this->x > 9){
+					this->x=this->x-1;
+				}
+			}
+			else if(num==3){
+				this->x=this->x-1;
+				if(this->x < 0){
+					this->x=this->x+1;
+				}
+			}
+			else if(num==4){
+				this->y=this->y+1;
+				if(this->y > 19){
+					this->y=this->y-1;
+				}
+			}
+
+			if(this->x >= 0 && this->x <= 9 && this->y >= 0 && this->y <= 19){
+				break;
+			}
+		}
+	};
 	char getShape() {
 		return '@';
 	}
@@ -114,6 +147,7 @@ public:
 int main() {
 
 	char str[10][20];
+	int q=0;
 	srand((unsigned int)time(NULL));
 	GameObject *h = new Human(0,0,1);
 	GameObject *m = new Monster(5,5,2);
@@ -144,12 +178,27 @@ int main() {
 		m->move();
 		str[m->getX()][m->getY()]=m->getShape();
 
+		q++;
+		if(q>=6){
+			q=1;
+		}
+		else if(q>3){
+			str[f->getX()][f->getY()]='-';
+			f->move();
+			str[f->getX()][f->getY()]=f->getShape();
+		}
+
+
 		if(h->collide(f)){
 			cout << "게임에서 이겼습니다." << endl;
 			break;
 		}
 		else if(m->collide(h)){
 			cout << "몬스터에게 잡혔습니다." << endl;
+			break;
+		}
+		else if(m->collide(f)){
+			cout << "몬스터가 음식을 먹었습니다." << endl;
 			break;
 		}
 
